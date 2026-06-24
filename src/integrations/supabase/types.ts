@@ -14,7 +14,149 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      forms: {
+        Row: {
+          created_at: string
+          description: string | null
+          fields: Json
+          id: string
+          published: boolean
+          sheet_header_written: boolean
+          sheet_id: string | null
+          sheet_url: string | null
+          slug: string
+          submission_count: number
+          theme: Json
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          fields?: Json
+          id?: string
+          published?: boolean
+          sheet_header_written?: boolean
+          sheet_id?: string | null
+          sheet_url?: string | null
+          slug: string
+          submission_count?: number
+          theme?: Json
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          fields?: Json
+          id?: string
+          published?: boolean
+          sheet_header_written?: boolean
+          sheet_id?: string | null
+          sheet_url?: string | null
+          slug?: string
+          submission_count?: number
+          theme?: Json
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      google_tokens: {
+        Row: {
+          access_token: string
+          created_at: string
+          expires_at: string | null
+          refresh_token: string | null
+          scope: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_token: string
+          created_at?: string
+          expires_at?: string | null
+          refresh_token?: string | null
+          scope?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_token?: string
+          created_at?: string
+          expires_at?: string | null
+          refresh_token?: string | null
+          scope?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      submissions: {
+        Row: {
+          created_at: string
+          form_id: string
+          id: string
+          payload: Json
+          submitter_ip: string | null
+          submitter_ua: string | null
+          synced_to_sheet: boolean
+        }
+        Insert: {
+          created_at?: string
+          form_id: string
+          id?: string
+          payload: Json
+          submitter_ip?: string | null
+          submitter_ua?: string | null
+          synced_to_sheet?: boolean
+        }
+        Update: {
+          created_at?: string
+          form_id?: string
+          id?: string
+          payload?: Json
+          submitter_ip?: string | null
+          submitter_ua?: string | null
+          synced_to_sheet?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "submissions_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "forms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
