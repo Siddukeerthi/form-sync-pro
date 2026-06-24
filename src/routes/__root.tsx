@@ -83,7 +83,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Formlinc lets marketers build beautiful forms, share a link, and sync every submission straight into their own Google Sheet in real time.",
       },
-      { property: "og:title", content: "Formlinc — Forms that sync to your Google Sheet" },
+      { property: "og:title", content: "Formlinc — Capture leads. Sync instantly. Zero friction." },
       {
         property: "og:description",
         content:
@@ -91,6 +91,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Formlinc — Capture leads. Sync instantly. Zero friction." },
+      { name: "description", content: "Form Sync Pro creates custom forms, shares them via link, and syncs submissions to Google Sheets." },
+      { property: "og:description", content: "Form Sync Pro creates custom forms, shares them via link, and syncs submissions to Google Sheets." },
+      { name: "twitter:description", content: "Form Sync Pro creates custom forms, shares them via link, and syncs submissions to Google Sheets." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c2473243-e694-42ca-99eb-2e8a11e34a0d/id-preview-ac73f787--63da3122-1cff-4c8a-9039-aa62b2a52680.lovable.app-1782281653230.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c2473243-e694-42ca-99eb-2e8a11e34a0d/id-preview-ac73f787--63da3122-1cff-4c8a-9039-aa62b2a52680.lovable.app-1782281653230.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
