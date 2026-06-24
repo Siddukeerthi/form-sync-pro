@@ -65,27 +65,18 @@ export const Route = createFileRoute("/api/public/submit/$slug")({
         });
         if (iErr) return json({ error: "Could not save" }, 500);
 
-        await supabaseAdmin.rpc;
-        await supabaseAdmin
-          .from("forms")
-          .update({ submission_count: (form as any).submission_count ?? undefined })
-          .eq("id", form.id);
-
-        // increment counter
-        await supabaseAdmin.rpc("noop").catch(() => {});
-        await supabaseAdmin
+        // increment submission counter
+        const { data: cur } = await supabaseAdmin
           .from("forms")
           .select("submission_count")
           .eq("id", form.id)
-          .maybeSingle()
-          .then(async ({ data }) => {
-            if (data) {
-              await supabaseAdmin
-                .from("forms")
-                .update({ submission_count: (data.submission_count ?? 0) + 1 })
-                .eq("id", form.id);
-            }
-          });
+          .maybeSingle();
+        if (cur) {
+          await supabaseAdmin
+            .from("forms")
+            .update({ submission_count: (cur.submission_count ?? 0) + 1 })
+            .eq("id", form.id);
+        }
 
         return json({ ok: true });
       },
