@@ -9,8 +9,20 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Sign in — Formlinc" },
-      { name: "description", content: "Sign in to Formlinc." },
+      {
+        name: "description",
+        content:
+          "Sign in to Formlinc to create beautiful forms that sync submissions instantly into your own Google Sheets.",
+      },
+      { property: "og:title", content: "Sign in — Formlinc" },
+      {
+        property: "og:description",
+        content: "Sign in to Formlinc and start collecting form responses straight into Google Sheets.",
+      },
+      { property: "og:url", content: "https://formlinc.lovable.app/auth" },
+      { name: "robots", content: "noindex" },
     ],
+    links: [{ rel: "canonical", href: "https://formlinc.lovable.app/auth" }],
   }),
   component: AuthPage,
 });
