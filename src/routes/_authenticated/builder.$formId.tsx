@@ -127,11 +127,15 @@ function Builder() {
 
   return (
     <AppShell>
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-        <Link to="/dashboard" className="text-sm inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-4 w-4" /> All forms
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] sm:flex sm:flex-wrap sm:items-center sm:justify-between gap-3 mb-6">
+        <Link
+          to="/dashboard"
+          className="text-sm inline-flex items-center gap-1 text-muted-foreground hover:text-foreground min-w-0"
+        >
+          <ArrowLeft className="h-4 w-4 shrink-0" />
+          <span className="truncate">All forms</span>
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="col-span-2 sm:col-auto flex flex-wrap items-center gap-2">
           <a
             href={`/f/${form.slug}`}
             target="_blank"
@@ -153,7 +157,13 @@ function Builder() {
             onClick={togglePublish}
             className={`h-9 px-4 rounded-lg text-sm font-medium inline-flex items-center gap-1.5 ${published ? "bg-accent text-accent-foreground" : "bg-primary text-primary-foreground"}`}
           >
-            {published ? <><Check className="h-4 w-4" /> Live</> : "Publish"}
+            {published ? (
+              <>
+                <Check className="h-4 w-4" /> Live
+              </>
+            ) : (
+              "Publish"
+            )}
           </button>
         </div>
       </div>
@@ -163,7 +173,7 @@ function Builder() {
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`px-4 py-1.5 rounded-lg capitalize ${tab === t ? "bg-card shadow-sm" : "text-muted-foreground"}`}
+            className={`px-4 py-1.5 rounded-lg capitalize transition ${tab === t ? "bg-card shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
           >
             {t}
           </button>
@@ -174,28 +184,30 @@ function Builder() {
         <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6">
           {/* Toolbox */}
           <aside className="lg:sticky lg:top-24 self-start rounded-3xl bg-card border border-border/70 soft-shadow p-4">
-            <p className="px-2 pb-2 text-xs uppercase tracking-wider text-muted-foreground">Add field</p>
-            <div className="space-y-1">
+            <p className="px-2 pb-2 text-xs uppercase tracking-wider text-muted-foreground">
+              Add field
+            </p>
+            <div className="grid grid-cols-2 lg:grid-cols-1 gap-1">
               {(Object.keys(FIELD_LABELS) as FieldType[]).map((t) => (
                 <button
                   key={t}
                   onClick={() => addField(t)}
-                  className="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-muted flex items-center justify-between"
+                  className="text-left px-3 py-2 rounded-lg text-sm hover:bg-muted flex items-center justify-between gap-2 transition"
                 >
-                  {FIELD_LABELS[t]}
-                  <Plus className="h-3.5 w-3.5 opacity-50" />
+                  <span className="truncate">{FIELD_LABELS[t]}</span>
+                  <Plus className="h-3.5 w-3.5 opacity-50 shrink-0" />
                 </button>
               ))}
             </div>
           </aside>
 
           {/* Canvas */}
-          <div className="rounded-3xl bg-card border border-border/70 soft-shadow p-6 md:p-10">
+          <div className="rounded-3xl bg-card border border-border/70 soft-shadow p-5 sm:p-6 md:p-10 min-w-0">
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               onBlur={commit}
-              className="w-full font-display text-4xl md:text-5xl bg-transparent outline-none placeholder:text-muted-foreground/60"
+              className="w-full font-display text-3xl sm:text-4xl md:text-5xl bg-transparent outline-none placeholder:text-muted-foreground/60"
               placeholder="Untitled form"
             />
             <textarea
@@ -226,7 +238,7 @@ function Builder() {
 
               {fields.length === 0 && (
                 <div className="rounded-2xl border-2 border-dashed border-border p-12 text-center text-sm text-muted-foreground">
-                  Add your first field from the panel on the left.
+                  Add your first field from the panel above.
                 </div>
               )}
             </div>
