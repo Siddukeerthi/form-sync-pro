@@ -264,6 +264,7 @@ function SortableField({
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: field.id });
   const style = { transform: CSS.Transform.toString(transform), transition, zIndex: isDragging ? 10 : 1 };
+  const supportsPlaceholder = !["select", "checkbox"].includes(field.type);
 
   return (
     <motion.div
@@ -272,30 +273,44 @@ function SortableField({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      className={`group rounded-2xl bg-background border border-border p-4 ${isDragging ? "soft-shadow" : ""}`}
+      className={`group rounded-2xl bg-background border border-border p-3 sm:p-4 ${isDragging ? "soft-shadow" : ""}`}
     >
-      <div className="flex items-start gap-3">
+      <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] gap-2 sm:gap-3 items-start">
         <button
+          type="button"
           {...attributes}
           {...listeners}
-          className="mt-1 h-7 w-7 inline-flex items-center justify-center rounded-md text-muted-foreground hover:bg-muted cursor-grab active:cursor-grabbing"
+          aria-label="Drag to reorder"
+          className="mt-1 h-7 w-7 inline-flex items-center justify-center rounded-md text-muted-foreground hover:bg-muted cursor-grab active:cursor-grabbing shrink-0"
         >
           <GripVertical className="h-4 w-4" />
         </button>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
+
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
             <input
               value={field.label}
               onChange={(e) => onChange({ label: e.target.value })}
               onBlur={onBlur}
-              className="flex-1 bg-transparent outline-none font-medium text-sm"
+              placeholder="Field label"
+              className="flex-1 min-w-0 bg-transparent outline-none font-medium text-sm"
             />
-            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-mono">
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-mono px-2 py-0.5 rounded-md bg-muted shrink-0">
               {FIELD_LABELS[field.type]}
             </span>
           </div>
 
           <FieldPreview field={field} />
+
+          {supportsPlaceholder && (
+            <input
+              value={field.placeholder ?? ""}
+              onChange={(e) => onChange({ placeholder: e.target.value })}
+              onBlur={onBlur}
+              placeholder="Placeholder text (optional)"
+              className="mt-2 w-full text-xs h-8 px-2 rounded-md bg-card border border-border outline-none focus:ring-2 focus:ring-ring/30"
+            />
+          )}
 
           {field.type === "select" && (
             <div className="mt-3 space-y-1.5">
@@ -309,49 +324,67 @@ function SortableField({
                       onChange({ options: next });
                     }}
                     onBlur={onBlur}
-                    className="flex-1 text-xs h-8 px-2 rounded-md bg-card border border-border outline-none"
+                    className="flex-1 min-w-0 text-xs h-8 px-2 rounded-md bg-card border border-border outline-none focus:ring-2 focus:ring-ring/30"
                   />
                   <button
+                    type="button"
                     onClick={() => {
                       onChange({ options: (field.options ?? []).filter((_, j) => j !== i) });
                       onBlur();
                     }}
-                    className="h-7 w-7 inline-flex items-center justify-center rounded-md hover:bg-muted text-muted-foreground"
+                    className="h-7 w-7 inline-flex items-center justify-center rounded-md hover:bg-muted text-muted-foreground shrink-0"
                   >
                     <Trash2 className="h-3 w-3" />
                   </button>
                 </div>
               ))}
               <button
+                type="button"
                 onClick={() => {
                   onChange({ options: [...(field.options ?? []), `Option ${(field.options?.length ?? 0) + 1}`] });
                   onBlur();
                 }}
-                className="text-xs text-primary inline-flex items-center gap-1 mt-1"
+                className="text-xs text-primary inline-flex items-center gap-1 mt-1 hover:underline"
               >
                 <Plus className="h-3 w-3" /> Add option
               </button>
             </div>
           )}
 
-          <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
-            <label className="inline-flex items-center gap-1.5 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={!!field.required}
-                onChange={(e) => {
-                  onChange({ required: e.target.checked });
-                  onBlur();
-                }}
-                className="accent-primary"
-              />
-              Required
-            </label>
+          <div className="mt-3 flex items-center gap-4 text-xs">
+            <button
+              type="button"
+              role="switch"
+              aria-checked={!!field.required}
+              onClick={() => {
+                onChange({ required: !field.required });
+                onBlur();
+              }}
+              className="inline-flex items-center gap-2 group/req"
+            >
+              <span
+                className={`relative h-5 w-9 rounded-full transition-colors ${
+                  field.required ? "bg-foreground" : "bg-muted"
+                }`}
+              >
+                <span
+                  className={`absolute top-0.5 h-4 w-4 rounded-full bg-background shadow transition-all ${
+                    field.required ? "left-[18px]" : "left-0.5"
+                  }`}
+                />
+              </span>
+              <span className="text-muted-foreground group-hover/req:text-foreground transition-colors">
+                Required
+              </span>
+            </button>
           </div>
         </div>
+
         <button
+          type="button"
           onClick={onRemove}
-          className="opacity-0 group-hover:opacity-100 transition h-7 w-7 inline-flex items-center justify-center rounded-md hover:bg-destructive/10 text-destructive"
+          aria-label="Remove field"
+          className="opacity-60 sm:opacity-0 group-hover:opacity-100 focus:opacity-100 transition h-7 w-7 inline-flex items-center justify-center rounded-md hover:bg-destructive/10 text-destructive shrink-0"
         >
           <Trash2 className="h-3.5 w-3.5" />
         </button>
@@ -361,16 +394,21 @@ function SortableField({
 }
 
 function FieldPreview({ field }: { field: FormField }) {
-  const cls = "mt-2 w-full h-9 rounded-lg bg-card border border-border px-3 text-xs text-muted-foreground";
+  const cls = "mt-2 w-full h-9 rounded-lg bg-card border border-border px-3 text-xs text-muted-foreground inline-flex items-center";
   switch (field.type) {
     case "long_text":
-      return <div className={`${cls} h-16 py-2`}>Long answer…</div>;
+      return <div className={`${cls} h-16 py-2 items-start pt-2`}>{field.placeholder || "Long answer…"}</div>;
     case "checkbox":
-      return <div className="mt-2 text-xs text-muted-foreground inline-flex items-center gap-2"><span className="h-4 w-4 rounded border border-border" /> Yes</div>;
+      return (
+        <div className="mt-2 text-xs text-muted-foreground inline-flex items-center gap-2">
+          <span className="h-4 w-4 rounded-md border-2 border-border" />
+          {field.placeholder || "I agree"}
+        </div>
+      );
     case "select":
       return null;
     default:
-      return <div className={cls}>{field.placeholder ?? "Short answer…"}</div>;
+      return <div className={cls}>{field.placeholder || "Short answer…"}</div>;
   }
 }
 
