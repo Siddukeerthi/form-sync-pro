@@ -77,26 +77,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Formlinc — Capture leads. Sync instantly. Zero friction." },
+      { title: "Formlinc — Forms that sync to Google Sheets" },
       {
         name: "description",
         content:
-          "Formlinc lets marketers build beautiful forms, share a link, and sync every submission straight into their own Google Sheet in real time.",
-      },
-      { property: "og:title", content: "Formlinc — Capture leads. Sync instantly. Zero friction." },
-      {
-        property: "og:description",
-        content:
-          "Build, share, and collect. Every submission lands in your Google Sheet in real time — no Zapier, no glue code.",
+          "Formlinc lets you build beautiful forms, share a link, and sync every submission straight into your own Google Sheet in real time.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Formlinc" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Formlinc — Capture leads. Sync instantly. Zero friction." },
-      { name: "description", content: "Form Sync Pro creates custom forms, shares them via link, and syncs submissions to Google Sheets." },
-      { property: "og:description", content: "Form Sync Pro creates custom forms, shares them via link, and syncs submissions to Google Sheets." },
-      { name: "twitter:description", content: "Form Sync Pro creates custom forms, shares them via link, and syncs submissions to Google Sheets." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c2473243-e694-42ca-99eb-2e8a11e34a0d/id-preview-ac73f787--63da3122-1cff-4c8a-9039-aa62b2a52680.lovable.app-1782281653230.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c2473243-e694-42ca-99eb-2e8a11e34a0d/id-preview-ac73f787--63da3122-1cff-4c8a-9039-aa62b2a52680.lovable.app-1782281653230.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -105,6 +94,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              name: "Formlinc",
+              url: "https://formlinc.lovable.app",
+            },
+            {
+              "@type": "WebSite",
+              name: "Formlinc",
+              url: "https://formlinc.lovable.app",
+              description:
+                "Build forms, share a link, and sync submissions straight into your own Google Sheet in real time.",
+            },
+          ],
+        }),
       },
     ],
   }),

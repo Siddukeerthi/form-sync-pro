@@ -1,0 +1,9 @@
+# Formlinc
+
+> Formlinc lets you build beautiful forms, share a link, and sync every submission straight into your own Google Sheet in real time.
+
+Formlinc is a SaaS tool for marketers, founders, and operators who want a fast way to collect responses without wiring up Zapier or writing glue code. Create a form, share the public link, and every submission lands in your Google Sheet automatically.
+
+## Pages
+
+- [Home](/): Product overview, features, and pricing.

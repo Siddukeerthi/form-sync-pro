@@ -13,22 +13,26 @@ import { Reveal, RevealItem, RevealStagger } from "@/components/marketing/Reveal
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Formlinc — Capture leads. Sync instantly. Zero friction." },
+      { title: "Formlinc — Forms that sync to your Google Sheet" },
       {
         name: "description",
         content:
-          "Build beautiful forms, share a link, and watch every submission land in your own Google Sheet — in real time.",
+          "Build beautiful forms, share a link, and watch every submission land in your own Google Sheet in real time. No Zapier, no glue code.",
       },
-      {
-        property: "og:title",
-        content: "Formlinc — Forms that sync to your Google Sheet",
-      },
+      { property: "og:title", content: "Formlinc — Forms that sync to your Google Sheet" },
       {
         property: "og:description",
         content:
           "Build, share, collect. Every submission lands in your Google Sheet in real time. No Zapier, no glue code.",
       },
+      { property: "og:url", content: "https://formlinc.lovable.app/" },
+      { name: "twitter:title", content: "Formlinc — Forms that sync to your Google Sheet" },
+      {
+        name: "twitter:description",
+        content: "Build forms, share a link, and sync submissions to your Google Sheet in real time.",
+      },
     ],
+    links: [{ rel: "canonical", href: "https://formlinc.lovable.app/" }],
   }),
   component: Landing,
 });
