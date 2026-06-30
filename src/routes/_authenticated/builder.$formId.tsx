@@ -203,10 +203,12 @@ function Builder() {
 
           {/* Canvas */}
           <div className="rounded-3xl bg-card border border-border/70 soft-shadow p-5 sm:p-6 md:p-10 min-w-0">
+            <h1 className="sr-only">{title || "Untitled form"} — form builder</h1>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               onBlur={commit}
+              aria-label="Form title"
               className="w-full font-display text-3xl sm:text-4xl md:text-5xl bg-transparent outline-none placeholder:text-muted-foreground/60"
               placeholder="Untitled form"
             />
@@ -328,6 +330,7 @@ function SortableField({
                   />
                   <button
                     type="button"
+                    aria-label="Remove option"
                     onClick={() => {
                       onChange({ options: (field.options ?? []).filter((_, j) => j !== i) });
                       onBlur();
