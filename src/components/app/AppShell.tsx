@@ -36,6 +36,7 @@ export function AppShell({ children, action }: { children: ReactNode; action?: R
             {action}
             <button
               onClick={signOut}
+              aria-label="Sign out"
               className="h-9 w-9 inline-flex items-center justify-center rounded-lg hover:bg-muted"
               title="Sign out"
             >

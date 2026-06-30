@@ -11,12 +11,12 @@ interface SitemapEntry {
 }
 
 export const Route = createFileRoute("/sitemap.xml")({
-  // @ts-expect-error - server handlers are provided by router-plugin augmentation
   server: {
     handlers: {
       GET: async () => {
         const entries: SitemapEntry[] = [
           { path: "/", changefreq: "weekly", priority: "1.0" },
+          { path: "/blog/connect-forms-to-google-sheets-without-zapier", changefreq: "monthly", priority: "0.7" },
         ];
 
         const urls = entries.map((e) =>

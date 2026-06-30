@@ -89,6 +89,7 @@ function Dashboard() {
                 </span>
                 <button
                   onClick={() => confirm("Delete this form?") && delMut.mutate(f.id)}
+                  aria-label={`Delete form ${f.title}`}
                   className="opacity-0 group-hover:opacity-100 transition h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-destructive/10 text-destructive"
                 >
                   <Trash2 className="h-4 w-4" />
