@@ -11,6 +11,7 @@ interface SitemapEntry {
 }
 
 export const Route = createFileRoute("/sitemap.xml")({
+  // @ts-expect-error - server handlers are provided by router-plugin augmentation
   server: {
     handlers: {
       GET: async () => {
