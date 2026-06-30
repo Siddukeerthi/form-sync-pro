@@ -14,6 +14,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FSlugRouteImport } from './routes/f.$slug'
+import { Route as BlogConnectFormsToGoogleSheetsWithoutZapierRouteImport } from './routes/blog.connect-forms-to-google-sheets-without-zapier'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedBuilderFormIdRouteImport } from './routes/_authenticated/builder.$formId'
 import { Route as ApiPublicSubmitSlugRouteImport } from './routes/api/public/submit.$slug'
@@ -42,6 +43,12 @@ const FSlugRoute = FSlugRouteImport.update({
   path: '/f/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogConnectFormsToGoogleSheetsWithoutZapierRoute =
+  BlogConnectFormsToGoogleSheetsWithoutZapierRouteImport.update({
+    id: '/blog/connect-forms-to-google-sheets-without-zapier',
+    path: '/blog/connect-forms-to-google-sheets-without-zapier',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/blog/connect-forms-to-google-sheets-without-zapier': typeof BlogConnectFormsToGoogleSheetsWithoutZapierRoute
   '/f/$slug': typeof FSlugRoute
   '/builder/$formId': typeof AuthenticatedBuilderFormIdRoute
   '/api/public/submit/$slug': typeof ApiPublicSubmitSlugRoute
@@ -73,6 +81,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/blog/connect-forms-to-google-sheets-without-zapier': typeof BlogConnectFormsToGoogleSheetsWithoutZapierRoute
   '/f/$slug': typeof FSlugRoute
   '/builder/$formId': typeof AuthenticatedBuilderFormIdRoute
   '/api/public/submit/$slug': typeof ApiPublicSubmitSlugRoute
@@ -84,6 +93,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/blog/connect-forms-to-google-sheets-without-zapier': typeof BlogConnectFormsToGoogleSheetsWithoutZapierRoute
   '/f/$slug': typeof FSlugRoute
   '/_authenticated/builder/$formId': typeof AuthenticatedBuilderFormIdRoute
   '/api/public/submit/$slug': typeof ApiPublicSubmitSlugRoute
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/sitemap.xml'
     | '/dashboard'
+    | '/blog/connect-forms-to-google-sheets-without-zapier'
     | '/f/$slug'
     | '/builder/$formId'
     | '/api/public/submit/$slug'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/sitemap.xml'
     | '/dashboard'
+    | '/blog/connect-forms-to-google-sheets-without-zapier'
     | '/f/$slug'
     | '/builder/$formId'
     | '/api/public/submit/$slug'
@@ -114,6 +126,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/sitemap.xml'
     | '/_authenticated/dashboard'
+    | '/blog/connect-forms-to-google-sheets-without-zapier'
     | '/f/$slug'
     | '/_authenticated/builder/$formId'
     | '/api/public/submit/$slug'
@@ -124,6 +137,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  BlogConnectFormsToGoogleSheetsWithoutZapierRoute: typeof BlogConnectFormsToGoogleSheetsWithoutZapierRoute
   FSlugRoute: typeof FSlugRoute
   ApiPublicSubmitSlugRoute: typeof ApiPublicSubmitSlugRoute
 }
@@ -163,6 +177,13 @@ declare module '@tanstack/react-router' {
       path: '/f/$slug'
       fullPath: '/f/$slug'
       preLoaderRoute: typeof FSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/connect-forms-to-google-sheets-without-zapier': {
+      id: '/blog/connect-forms-to-google-sheets-without-zapier'
+      path: '/blog/connect-forms-to-google-sheets-without-zapier'
+      fullPath: '/blog/connect-forms-to-google-sheets-without-zapier'
+      preLoaderRoute: typeof BlogConnectFormsToGoogleSheetsWithoutZapierRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard': {
@@ -207,6 +228,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  BlogConnectFormsToGoogleSheetsWithoutZapierRoute:
+    BlogConnectFormsToGoogleSheetsWithoutZapierRoute,
   FSlugRoute: FSlugRoute,
   ApiPublicSubmitSlugRoute: ApiPublicSubmitSlugRoute,
 }
