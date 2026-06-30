@@ -8,7 +8,7 @@ const Body = z.object({
 export const Route = createFileRoute("/api/public/submit/$slug")({
   server: {
     handlers: {
-      POST: async ({ request, params }: { request: Request; params: { slug: string } }) => {
+      POST: async ({ request, params }) => {
         const json = (s: any, status = 200) =>
           new Response(JSON.stringify(s), {
             status,
