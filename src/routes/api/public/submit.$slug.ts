@@ -6,7 +6,6 @@ const Body = z.object({
 });
 
 export const Route = createFileRoute("/api/public/submit/$slug")({
-  // @ts-expect-error - server handlers are provided by router-plugin augmentation
   server: {
     handlers: {
       POST: async ({ request, params }: { request: Request; params: { slug: string } }) => {
