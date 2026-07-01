@@ -78,6 +78,14 @@ export const Route = createFileRoute("/api/public/submit/$slug")({
             .eq("id", form.id);
         }
 
+        // Best-effort: append to connected Google Sheet (won't fail the submission)
+        try {
+          const { syncSubmissionToSheet } = await import("@/lib/google.server");
+          await syncSubmissionToSheet({ formId: form.id, payload: cleaned });
+        } catch (e) {
+          console.error("[submit] sheet sync error", e);
+        }
+
         return json({ ok: true });
       },
     },

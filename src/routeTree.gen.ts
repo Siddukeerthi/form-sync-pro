@@ -18,6 +18,7 @@ import { Route as BlogConnectFormsToGoogleSheetsWithoutZapierRouteImport } from 
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedBuilderFormIdRouteImport } from './routes/_authenticated/builder.$formId'
 import { Route as ApiPublicSubmitSlugRouteImport } from './routes/api/public/submit.$slug'
+import { Route as ApiPublicGoogleCallbackRouteImport } from './routes/api/public/google.callback'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -65,6 +66,11 @@ const ApiPublicSubmitSlugRoute = ApiPublicSubmitSlugRouteImport.update({
   path: '/api/public/submit/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicGoogleCallbackRoute = ApiPublicGoogleCallbackRouteImport.update({
+  id: '/api/public/google/callback',
+  path: '/api/public/google/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/blog/connect-forms-to-google-sheets-without-zapier': typeof BlogConnectFormsToGoogleSheetsWithoutZapierRoute
   '/f/$slug': typeof FSlugRoute
   '/builder/$formId': typeof AuthenticatedBuilderFormIdRoute
+  '/api/public/google/callback': typeof ApiPublicGoogleCallbackRoute
   '/api/public/submit/$slug': typeof ApiPublicSubmitSlugRoute
 }
 export interface FileRoutesByTo {
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/blog/connect-forms-to-google-sheets-without-zapier': typeof BlogConnectFormsToGoogleSheetsWithoutZapierRoute
   '/f/$slug': typeof FSlugRoute
   '/builder/$formId': typeof AuthenticatedBuilderFormIdRoute
+  '/api/public/google/callback': typeof ApiPublicGoogleCallbackRoute
   '/api/public/submit/$slug': typeof ApiPublicSubmitSlugRoute
 }
 export interface FileRoutesById {
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/blog/connect-forms-to-google-sheets-without-zapier': typeof BlogConnectFormsToGoogleSheetsWithoutZapierRoute
   '/f/$slug': typeof FSlugRoute
   '/_authenticated/builder/$formId': typeof AuthenticatedBuilderFormIdRoute
+  '/api/public/google/callback': typeof ApiPublicGoogleCallbackRoute
   '/api/public/submit/$slug': typeof ApiPublicSubmitSlugRoute
 }
 export interface FileRouteTypes {
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/blog/connect-forms-to-google-sheets-without-zapier'
     | '/f/$slug'
     | '/builder/$formId'
+    | '/api/public/google/callback'
     | '/api/public/submit/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/blog/connect-forms-to-google-sheets-without-zapier'
     | '/f/$slug'
     | '/builder/$formId'
+    | '/api/public/google/callback'
     | '/api/public/submit/$slug'
   id:
     | '__root__'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/blog/connect-forms-to-google-sheets-without-zapier'
     | '/f/$slug'
     | '/_authenticated/builder/$formId'
+    | '/api/public/google/callback'
     | '/api/public/submit/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -139,6 +151,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BlogConnectFormsToGoogleSheetsWithoutZapierRoute: typeof BlogConnectFormsToGoogleSheetsWithoutZapierRoute
   FSlugRoute: typeof FSlugRoute
+  ApiPublicGoogleCallbackRoute: typeof ApiPublicGoogleCallbackRoute
   ApiPublicSubmitSlugRoute: typeof ApiPublicSubmitSlugRoute
 }
 
@@ -207,6 +220,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicSubmitSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/google/callback': {
+      id: '/api/public/google/callback'
+      path: '/api/public/google/callback'
+      fullPath: '/api/public/google/callback'
+      preLoaderRoute: typeof ApiPublicGoogleCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -231,18 +251,9 @@ const rootRouteChildren: RootRouteChildren = {
   BlogConnectFormsToGoogleSheetsWithoutZapierRoute:
     BlogConnectFormsToGoogleSheetsWithoutZapierRoute,
   FSlugRoute: FSlugRoute,
+  ApiPublicGoogleCallbackRoute: ApiPublicGoogleCallbackRoute,
   ApiPublicSubmitSlugRoute: ApiPublicSubmitSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
