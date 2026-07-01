@@ -495,3 +495,159 @@ function ResponsesPanel({ formId, fields, listSubs }: { formId: string; fields: 
     </div>
   );
 }
+
+function SheetsBar({ formId, sheetUrl }: { formId: string; sheetUrl: string | null }) {
+  const qc = useQueryClient();
+  const statusFn = useServerFn(getGoogleStatus);
+  const startFn = useServerFn(startGoogleAuth);
+  const disconnectAcc = useServerFn(disconnectGoogle);
+  const connectSheet = useServerFn(connectFormToSheet);
+  const disconnectSheet = useServerFn(disconnectFormFromSheet);
+  const syncFn = useServerFn(syncFormResponses);
+
+  const { data: status } = useQuery({
+    queryKey: ["google-status"],
+    queryFn: () => statusFn(),
+  });
+
+  const [busy, setBusy] = useState<null | "auth" | "connect" | "sync" | "disconnect">(null);
+
+  async function handleConnectGoogle() {
+    setBusy("auth");
+    try {
+      const { url } = await startFn({
+        data: { returnTo: `/builder/${formId}` },
+      });
+      window.location.href = url;
+    } catch (e: any) {
+      toast.error(e?.message ?? "Could not start Google sign-in");
+      setBusy(null);
+    }
+  }
+
+  async function handleDisconnectGoogle() {
+    if (!confirm("Disconnect Google? This clears all sheet links on your forms.")) return;
+    setBusy("disconnect");
+    try {
+      await disconnectAcc();
+      await qc.invalidateQueries({ queryKey: ["google-status"] });
+      await qc.invalidateQueries({ queryKey: ["form", formId] });
+      toast.success("Google disconnected");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function handleConnectSheet() {
+    setBusy("connect");
+    try {
+      const res = await connectSheet({ data: { formId } });
+      await qc.invalidateQueries({ queryKey: ["form", formId] });
+      toast.success(res.alreadyConnected ? "Already connected" : "Sheet created");
+    } catch (e: any) {
+      toast.error(e?.message ?? "Could not connect sheet");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function handleDisconnectSheet() {
+    setBusy("disconnect");
+    try {
+      await disconnectSheet({ data: { formId } });
+      await qc.invalidateQueries({ queryKey: ["form", formId] });
+      toast.success("Sheet disconnected");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function handleSync() {
+    setBusy("sync");
+    try {
+      const res = await syncFn({ data: { formId } });
+      toast.success(res.synced ? `Synced ${res.synced} response${res.synced === 1 ? "" : "s"}` : "Nothing new to sync");
+    } catch (e: any) {
+      toast.error(e?.message ?? "Sync failed");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  return (
+    <div className="mb-6 rounded-2xl bg-card border border-border/70 p-4 flex flex-wrap items-center gap-3">
+      <div className="flex items-center gap-2 min-w-0">
+        <span className="h-8 w-8 rounded-lg bg-muted inline-flex items-center justify-center">
+          <Sheet className="h-4 w-4" />
+        </span>
+        <div className="min-w-0">
+          <p className="text-sm font-medium leading-tight">Google Sheets</p>
+          <p className="text-xs text-muted-foreground truncate">
+            {!status?.connected
+              ? "Connect your Google account to sync submissions"
+              : sheetUrl
+                ? "Auto-syncing every new submission"
+                : "Google connected — create a sheet for this form"}
+          </p>
+        </div>
+      </div>
+
+      <div className="ml-auto flex flex-wrap items-center gap-2">
+        {!status?.connected ? (
+          <button
+            onClick={handleConnectGoogle}
+            disabled={busy !== null}
+            className="h-9 px-3 rounded-lg bg-foreground text-background text-sm inline-flex items-center gap-1.5 disabled:opacity-60"
+          >
+            {busy === "auth" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sheet className="h-4 w-4" />}
+            Connect Google
+          </button>
+        ) : sheetUrl ? (
+          <>
+            <a
+              href={sheetUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="h-9 px-3 rounded-lg bg-card border border-border text-sm inline-flex items-center gap-1.5 hover:bg-muted"
+            >
+              <ExternalLink className="h-4 w-4" /> Open sheet
+            </a>
+            <button
+              onClick={handleSync}
+              disabled={busy !== null}
+              className="h-9 px-3 rounded-lg bg-primary text-primary-foreground text-sm inline-flex items-center gap-1.5 disabled:opacity-60"
+            >
+              {busy === "sync" ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+              Transfer to Sheet
+            </button>
+            <button
+              onClick={handleDisconnectSheet}
+              disabled={busy !== null}
+              className="h-9 px-3 rounded-lg bg-card border border-border text-sm inline-flex items-center gap-1.5 hover:bg-muted"
+            >
+              <Unplug className="h-4 w-4" /> Unlink sheet
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={handleConnectSheet}
+              disabled={busy !== null}
+              className="h-9 px-3 rounded-lg bg-primary text-primary-foreground text-sm inline-flex items-center gap-1.5 disabled:opacity-60"
+            >
+              {busy === "connect" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sheet className="h-4 w-4" />}
+              Create & connect sheet
+            </button>
+            <button
+              onClick={handleDisconnectGoogle}
+              disabled={busy !== null}
+              className="h-9 px-3 rounded-lg bg-card border border-border text-sm inline-flex items-center gap-1.5 hover:bg-muted"
+            >
+              <Unplug className="h-4 w-4" /> Disconnect Google
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
