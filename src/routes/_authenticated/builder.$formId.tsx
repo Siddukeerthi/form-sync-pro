@@ -13,7 +13,10 @@ import {
   GripVertical,
   Loader2,
   Plus,
+  RefreshCw,
+  Sheet,
   Trash2,
+  Unplug,
 } from "lucide-react";
 import {
   DndContext,
@@ -32,6 +35,14 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { AppShell } from "@/components/app/AppShell";
 import { getForm, listSubmissions, updateForm } from "@/lib/forms.functions";
+import {
+  connectFormToSheet,
+  disconnectFormFromSheet,
+  disconnectGoogle,
+  getGoogleStatus,
+  startGoogleAuth,
+  syncFormResponses,
+} from "@/lib/google.functions";
 import { FIELD_LABELS, FieldType, FormField, newField } from "@/lib/forms.types";
 import { toast } from "sonner";
 
