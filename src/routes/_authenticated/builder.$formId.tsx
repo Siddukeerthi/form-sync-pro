@@ -191,6 +191,8 @@ function Builder() {
         ))}
       </div>
 
+      <SheetsBar formId={formId} sheetUrl={form.sheet_url} />
+
       {tab === "build" ? (
         <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6">
           {/* Toolbox */}
