@@ -6,6 +6,9 @@ import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") ? s.next : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Sign in — Formlinc" },
@@ -35,12 +38,17 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const router = useRouter();
+  const { next } = Route.useSearch();
+  const destination = next ?? "/dashboard";
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard" });
+      if (data.session) {
+        if (next) window.location.href = next;
+        else navigate({ to: "/dashboard" });
+      }
     });
-  }, [navigate]);
+  }, [navigate, next]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -51,7 +59,7 @@ function AuthPage() {
           email,
           password,
           options: {
-            emailRedirectTo: window.location.origin + "/dashboard",
+            emailRedirectTo: window.location.origin + destination,
             data: { full_name: name },
           },
         });
@@ -62,7 +70,8 @@ function AuthPage() {
         if (error) throw error;
       }
       router.invalidate();
-      navigate({ to: "/dashboard" });
+      if (next) window.location.href = next;
+      else navigate({ to: "/dashboard" });
     } catch (e: any) {
       toast.error(e.message ?? "Something went wrong");
     } finally {
@@ -73,7 +82,7 @@ function AuthPage() {
   async function google() {
     setLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin + "/dashboard",
+      redirect_uri: window.location.origin + destination,
     });
     if (result.error) {
       toast.error(result.error.message ?? "Google sign-in failed");
@@ -82,7 +91,8 @@ function AuthPage() {
     }
     if (result.redirected) return;
     router.invalidate();
-    navigate({ to: "/dashboard" });
+    if (next) window.location.href = next;
+    else navigate({ to: "/dashboard" });
   }
 
   return (
