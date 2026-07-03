@@ -21,6 +21,7 @@ import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } fr
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as AuthenticatedBuilderFormIdRouteImport } from './routes/_authenticated/builder.$formId'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as ApiPublicSubmitSlugRouteImport } from './routes/api/public/submit.$slug'
 import { Route as ApiPublicGoogleCallbackRouteImport } from './routes/api/public/google.callback'
 
@@ -88,6 +89,11 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicSubmitSlugRoute = ApiPublicSubmitSlugRouteImport.update({
   id: '/api/public/submit/$slug',
   path: '/api/public/submit/$slug',
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/blog/connect-forms-to-google-sheets-without-zapier': typeof BlogConnectFormsToGoogleSheetsWithoutZapierRoute
   '/f/$slug': typeof FSlugRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/builder/$formId': typeof AuthenticatedBuilderFormIdRoute
   '/api/public/google/callback': typeof ApiPublicGoogleCallbackRoute
@@ -124,6 +131,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/blog/connect-forms-to-google-sheets-without-zapier': typeof BlogConnectFormsToGoogleSheetsWithoutZapierRoute
   '/f/$slug': typeof FSlugRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/builder/$formId': typeof AuthenticatedBuilderFormIdRoute
   '/api/public/google/callback': typeof ApiPublicGoogleCallbackRoute
@@ -141,6 +149,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/blog/connect-forms-to-google-sheets-without-zapier': typeof BlogConnectFormsToGoogleSheetsWithoutZapierRoute
   '/f/$slug': typeof FSlugRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/builder/$formId': typeof AuthenticatedBuilderFormIdRoute
   '/api/public/google/callback': typeof ApiPublicGoogleCallbackRoute
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/blog/connect-forms-to-google-sheets-without-zapier'
     | '/f/$slug'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/builder/$formId'
     | '/api/public/google/callback'
@@ -173,6 +183,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/blog/connect-forms-to-google-sheets-without-zapier'
     | '/f/$slug'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/builder/$formId'
     | '/api/public/google/callback'
@@ -189,6 +200,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/blog/connect-forms-to-google-sheets-without-zapier'
     | '/f/$slug'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/builder/$formId'
     | '/api/public/google/callback'
@@ -205,6 +217,7 @@ export interface RootRouteChildren {
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   BlogConnectFormsToGoogleSheetsWithoutZapierRoute: typeof BlogConnectFormsToGoogleSheetsWithoutZapierRoute
   FSlugRoute: typeof FSlugRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ApiPublicGoogleCallbackRoute: typeof ApiPublicGoogleCallbackRoute
   ApiPublicSubmitSlugRoute: typeof ApiPublicSubmitSlugRoute
@@ -296,6 +309,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/submit/$slug': {
       id: '/api/public/submit/$slug'
       path: '/api/public/submit/$slug'
@@ -338,6 +358,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogConnectFormsToGoogleSheetsWithoutZapierRoute:
     BlogConnectFormsToGoogleSheetsWithoutZapierRoute,
   FSlugRoute: FSlugRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ApiPublicGoogleCallbackRoute: ApiPublicGoogleCallbackRoute,
   ApiPublicSubmitSlugRoute: ApiPublicSubmitSlugRoute,
